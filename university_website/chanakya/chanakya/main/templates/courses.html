@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Courses</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px; /* Add margin to the body for overall spacing */
+        }
+        h1, h2 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0; /* Remove default margin for lists */
+        }
+        li {
+            margin-bottom: 8px; /* Space between list items */
+        }
+        .section {
+            margin-bottom: 30px; /* Space between sections */
+            padding: 20px; /* Optional: add padding for better spacing inside the section */
+            border: 1px solid #ccc; /* Optional: add a border to visually separate sections */
+            border-radius: 8px; /* Optional: add rounded corners for a nicer look */
+            background-color: #f9f9f9; /* Optional: add background color for sections */
+        }
+    </style>
+</head>
+<body>
+    <h1>Courses</h1>
+
+    <div class="section">
+        <h2>Postgraduate Courses</h2>
+        <ul id="pg-courses-list">
+            <!-- PG courses will be populated here -->
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Undergraduate Courses</h2>
+        <ul id="ug-courses-list">
+            <!-- UG courses will be populated here -->
+        </ul>
+    </div>
+
+    <script>
+        // Fetch courses from the server
+        fetch('/get_courses/')
+            .then(response => response.json())
+            .then(data => {
+                // Populate PG courses
+                const pgList = document.getElementById('pg-courses-list');
+                pgList.innerHTML = ''; // Clear any existing content
+                if (data.pg_courses && Array.isArray(data.pg_courses)) {
+                    data.pg_courses.forEach(course => {
+                        const li = document.createElement('li');
+                        li.textContent = course;
+                        pgList.appendChild(li);
+                    });
+                } else {
+                    pgList.innerHTML = '<li>No PG courses available</li>';
+                }
+
+                // Populate UG courses
+                const ugList = document.getElementById('ug-courses-list');
+                ugList.innerHTML = ''; // Clear any existing content
+                if (data.ug_courses && Array.isArray(data.ug_courses)) {
+                    data.ug_courses.forEach(course => {
+                        const li = document.createElement('li');
+                        li.textContent = course;
+                        ugList.appendChild(li);
+                    });
+                } else {
+                    ugList.innerHTML = '<li>No UG courses available</li>';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching courses:', error);
+                document.getElementById('pg-courses-list').innerHTML = '<li>Error loading PG courses</li>';
+                document.getElementById('ug-courses-list').innerHTML = '<li>Error loading UG courses</li>';
+            });
+    </script>
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chanakya University</title>
+    <!-- FontAwesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('/home/ubuntu22/Documents/Security-and-Entrance-Arch1.jpg') no-repeat center center fixed;
+            background-size: cover;
+            background-attachment: fixed;
+            color: white;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(68, 68, 68, 0.8);
+            color: white;
+        }
+        header img {
+            max-width: 100px;
+            height: auto;
+        }
+        nav {
+            background-color: rgba(51, 51, 51, 0.8);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+        .social-icons {
+            display: flex;
+            align-items: center;
+            margin-right: auto;
+            padding: 14px;
+        }
+        .social-icons a {
+            color: white;
+            text-decoration: none;
+            padding: 0 10px;
+            font-size: 20px;
+        }
+        .social-icons a:hover {
+            color: #ddd;
+        }
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+        .nav-links a {
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+        .nav-links a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        hr {
+            border: 1px solid #333;
+        }
+        #content {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 8px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group button, .form-group select {
+            padding: 10px;
+            width: 100%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <img src="/home/ubuntu22/Documents/logo.jpeg" alt="Chanakya University">
+        <h1>Chanakya University</h1>
+    </header>
+
+    <nav>
+        <div class="social-icons">
+            <a href="https://www.instagram.com/chanakyadevanahalli" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="https://www.youtube.com/channel/UCXXXXXXXXXXXXXXX" target="_blank" title="YouTube"><i class="fab fa-youtube"></i></a>
+        </div>
+        <div class="nav-links">
+            <a href="#" onclick="showHome()">Home</a>
+            <a href="#" onclick="showAbout()">About</a>
+            <a href="#" onclick="showCourses()">Courses</a>
+            <a href="#" onclick="showStudentInfo()">Student Information</a>
+        </div>
+    </nav>
+
+    <hr>
+
+    <div id="content">
+        <!-- Dynamic Content will be loaded here -->
+    </div>
+
+    <script>
+        async function fetchStudentInfo(studentId) {
+            try {
+                const response = await fetch(`http://localhost:3000/student/${studentId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('content').innerHTML = `
+                        <h2>Student Information</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>First Name</th>
+                                    <th>Email ID</th>
+                                    <th>Course</th>
+                                    <th>Enrollment Date</th>
+                                    <th>End Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>${data.first_name}</td>
+                                    <td>${data.email_id}</td>
+                                    <td>${data.course}</td>
+                                    <td>${data.enrollment_date}</td>
+                                    <td>${data.end_date}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    `;
+                } else {
+                    const error = await response.json();
+                    document.getElementById('content').innerHTML = `
+                        <h2>Student Information</h2>
+                        <p>${error.message}</p>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error fetching student info:', error);
+                document.getElementById('content').innerHTML = `
+                    <h2>Student Information</h2>
+                    <p>There was an error fetching the student information. Please try again later.</p>
+                `;
+            }
+        }
+
+        function showHome() {
+            document.getElementById('content').innerHTML = `
+                <h2>Welcome to Chanakya University</h2>
+                <p>Chanakya University is dedicated to providing high-quality education to students worldwide. We offer a range of undergraduate and postgraduate courses to help you achieve your academic and career goals.</p>
+                <p>Our campus is equipped with modern facilities, and our faculty members are experts in their fields. Join us and embark on a journey of learning and personal growth.</p>
+            `;
+        }
+
+        function showAbout() {
+            document.getElementById('content').innerHTML = `
+                <h2>About Chanakya University</h2>
+                <p>Chanakya University is a prestigious institution known for its commitment to academic excellence and holistic development of students. Established in 1990, we have been at the forefront of education in various disciplines.</p>
+            `;
+        }
+
+        function showCourses() {
+            document.getElementById('content').innerHTML = `
+                <h2>Courses Offered</h2>
+                <form id="courseForm">
+                    <div class="form-group">
+                        <label for="course">Select a Course:</label>
+                        <select id="course" name="course">
+                            <option value="B.Sc">Bachelor of Science (B.Sc)</option>
+                            <option value="B.A">Bachelor of Arts (B.A)</option>
+                            <option value="BCA">Bachelor of Computer Application (BCA)</option>
+                            <option value="B.E">Bachelor of Engineering (B.E)</option>
+                            <option value="M.Sc">Master of Science (M.Sc)</option>
+                            <option value="MCA">Master of Computer Application (MCA)</option>
+                            <option value="M.Com">Master of Commerce (M.Com)</option>
+                            <option value="M.E">Master of Engineering (M.E)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" onclick="submitCourse()">Submit</button>
+                    </div>
+                </form>
+            `;
+        }
+
+        function showStudentInfo() {
+            document.getElementById('content').innerHTML = `
+                <h2>Student Information</h2>
+                <form id="studentForm">
+                    <div class="form-group">
+                        <label for="studentId">Enter Student ID:</label>
+                        <input type="text" id="studentId" name="studentId" placeholder="Enter student ID">
+                    </div>
+                    <div class="form-group">
+                        <button type="button" onclick="submitStudentId()">Submit</button>
+                    </div>
+                </form>
+                <h2>Static Student Information Table</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>first_name</th>
+                            <th>last_name</th>
+                            <th>email_id</th>
+                            <th>student_id</th>
+                            <th>enrollment_date</th>
+                            <th>end_date</th>
+                            <th>course_id</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>bhuvana</td>
+                            <td>yv</td>
+                            <td>bhuvana@gmail.com</td>
+                            <td>101</td>
+                            <td>2024-01-01</td>
+                            <td>2025-01-01</td>
+                            
+                            <td>1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function submitStudentId() {
+            const studentId = document.getElementById('studentId').value;
+            if (studentId.trim() === '') {
+                alert('Please enter a student ID');
+                return;
+            }
+            fetchStudentInfo(studentId);
+        }
+
+        function submitCourse() {
+            const selectedCourse = document.getElementById('course').value;
+            alert("You have selected: " + selectedCourse);
+        }
+
+        // Initialize with Home Page
+        showHome();
+    </script>
+
+</body>
+</html>

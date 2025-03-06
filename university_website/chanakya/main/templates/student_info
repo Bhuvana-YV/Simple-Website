@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px; /* Add margin to the body for overall spacing */
+        }
+        h1, h2 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0; /* Remove default margin for lists */
+        }
+        li {
+            margin-bottom: 8px; /* Space between list items */
+        }
+        .section {
+            margin-bottom: 30px; /* Space between sections */
+            padding: 20px; /* Optional: add padding for better spacing inside the section */
+            border: 1px solid #ccc; /* Optional: add a border to visually separate sections */
+            border-radius: 8px; /* Optional: add rounded corners for a nicer look */
+            background-color: #f9f9f9; /* Optional: add background color for sections */
+        }
+    </style>
+</head>
+<body>
+    <header>
+
+        <!-- Search Student -->
+        <div class="form-section">
+            <h3>Search Student</h3>
+            <input type="text" id="student-id" placeholder="Enter Student ID">
+            <button onclick="searchStudent()">Search</button>
+            <div id="search-results" class="results"></div>
+        </div>
+
+        <!-- Add Student -->
+        <div class="form-section">
+            <h3>Add Student</h3>
+            <input type="text" id="new-student-id" placeholder="Student ID">
+            <input type="text" id="new-name" placeholder="Name">
+            <input type="email" id="new-email" placeholder="Email">
+            <button onclick="addStudent()">Add Student</button>
+            <div id="add-results" class="results"></div>
+        </div>
+    </div>
+
+    <script>
+        function searchStudent() {
+            const studentId = document.getElementById('student-id').value;
+            fetch(`/search_student/?student_id=${studentId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById('search-results').innerHTML = data.error;
+                    } else {
+                        document.getElementById('search-results').innerHTML = `
+                            <p>Student ID: ${data.student_id}</p>
+                            <p>Name: ${data.name}</p>
+                            <p>Email: ${data.email}</p>
+                        `;
+                    }
+                });
+        }
+
+        function addStudent() {
+            const studentId = document.getElementById('new-student-id').value;
+            const name = document.getElementById('new-name').value;
+            const email = document.getElementById('new-email').value;
+
+            fetch('/add_student/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `student_id=${studentId}&name=${name}&email=${email}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('add-results').innerHTML = data.error;
+                } else {
+                    document.getElementById('add-results').innerHTML = data.success;
+                }
+            });
+        }
+    </script>
+</body>
+</html>

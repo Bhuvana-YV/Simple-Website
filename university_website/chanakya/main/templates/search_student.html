@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Information</title>
+    <script>
+        function searchStudent() {
+            const studentId = document.getElementById('student-id').value;
+            fetch(`/search_student/?student_id=${studentId}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById('search-results').innerHTML = data.error;
+                    } else {
+                        document.getElementById('search-results').innerHTML = `
+                            <p>Student ID: ${data.student_id}</p>
+                            <p>Name: ${data.name}</p>
+                            <p>Email: ${data.email}</p>
+                        `;
+                    }
+                });
+        }
+
+        function addStudent() {
+            const studentId = document.getElementById('new-student-id').value;
+            const name = document.getElementById('new-name').value;
+            const email = document.getElementById('new-email').value;
+
+            fetch('/add_student/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `student_id=${studentId}&name=${name}&email=${email}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('add-results').innerHTML = data.error;
+                } else {
+                    document.getElementById('add-results').innerHTML = data.success;
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Student Information</h1>
+    
+    <!-- Search Student -->
+    <h2>Search Student</h2>
+    <input type="text" id="student-id" placeholder="Enter Student ID">
+    <button onclick="searchStudent()">Search</button>
+    <div id="search-results"></div>
+
+    <!-- Add Student -->
+    <h2>Add Student</h2>
+    <input type="text" id="new-student-id" placeholder="Student ID">
+    <input type="text" id="new-name" placeholder="Name">
+    <input type="email" id="new-email" placeholder="Email">
+    <button onclick="addStudent()">Add Student</button>
+    <div id="add-results"></div>
+</body>
+</html>

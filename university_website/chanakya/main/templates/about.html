@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About University</title>
+    {% load static %}
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        .image-container {
+            width: 100vw; /* Full viewport width */
+            height: 50vh; /* Half viewport height */
+            overflow: hidden; /* Hide any overflow */
+            position: relative;
+        }
+        img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: auto; /* Maintain aspect ratio */
+            object-fit: contain; /* Ensure the whole image is visible without distortion */
+            transform: translate(-50%, -50%);
+        }
+        p {
+            font-family: 'Courier New', Courier, monospace;
+            font-style: normal;
+            font-size: small;
+            padding: 10px;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>About Our University</h1>
+    <div class="image-container">
+        <img src="{% static 'images/chanakyaimage.jpg' %}" alt="University Image">
+    </div>
+    <p>In a world grappling with complex challenges that often clash with dharma and nature, Chanakya University emerges as India’s premier institution dedicated to nurturing transformative leaders and pioneering new paradigms. Established in 2022 through a State Legislature Act, Chanakya University is a beacon of excellence, committed to addressing developmental challenges with innovative solutions. Our mission is to expand knowledge through world-class scholarship and impactful research, preparing students with abundant wisdom (jñāna), indomitable will (ichhā), and meaningful action (kriyā) that honor both Indian traditions and universal values.</p>
+</body>
+</html>
